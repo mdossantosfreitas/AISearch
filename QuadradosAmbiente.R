@@ -1,132 +1,104 @@
 source("Estado.R")
 
-## Classe e métodos para o problema do aspirador de pó
-QuadradosAmbiente <- function(quadrado = NULL, quad_atual = NULL, pai = NULL){
+## Classe e métodos para o problema dos 3 Missionários e 3 Canibais
+QuadradoAmbiente <- function(desc = NULL, pai = NULL){
   
   e <- environment()
   
-  #0 se limpo 
-  #1 se sujo
-  assign("quadrado", quadrado, envir = e)
-  #qual quadrado atual
-  assign("quad_atual", quad_atual, envir = e)
+  assign("desc", desc, envir = e)
   assign("pai", pai, envir = e)
   assign("g", 0, envir = e)
   assign("h", Inf, envir = e)
   assign("f", Inf, envir = e)
   
-  class(e) <- c("QuadradosAmbiente", "Estado")
+  class(e) <- c("QuadradoAmbiente", "Estado")
   
   return(e)
 }
 
 ## Sobrecarregando o operador "==" para comparação entre estados
-Ops.QuadradosAmbiente = function(obj1,obj2){
+Ops.QuadradoAmbiente = function(obj1,obj2){
   if(.Generic == "=="){
-    return(all(obj1$quad_atual == obj2$quad_atual, obj1$quadrado == obj2$quadrado))
+    return(all(obj1$desc == obj2$desc))
   }
 }
 
 ## Sobrecarga da função genérica "print" do R
-print.QuadradosAmbiente <- function(obj) {
-  cat("(0.0, 0.1, 1.0, 1.1): (", obj$quadrado, ")\n")
-  cat("Quadrado Atual:", obj$quad_atual , "\n")
+print.QuadradoAmbiente <- function(obj) {
+  cat("(Q1 Q2 Q3 Q4 A): (", obj$desc, ")\n")
   cat("G(n): ", obj$g, "\n")
   cat("H(n): ", obj$h, "\n")
   cat("F(n): ", obj$f, "\n")
 }
 
 ## Sobrecarga da função genérica "heuristica", definida por Estado.R
-heuristica.QuadradosAmbiente <- function(atual){
+heuristica.QuadradoAmbiente <- function(atual){
   
-  if(is.null(atual$quadrado))
+  if(is.null(atual$desc))
     return(Inf)
-  ## h(obj) = quadrado_1 + quadrado_2 + quadrado_3 + quadrado_4
-  return(sum(atual$quadrado))
+  ## h(obj) = M + C + B
+  return(sum(atual$desc))
 }
 
-geraFilhos.QuadradosAmbiente <- function(obj) {
-  
-  custo <- list(2,1,1,3,3)
+geraFilhos.QuadradoAmbiente <- function(obj) {
+  custo <- c(2,1,1,3,3)
   filhos <- list()
   
   filhosDesc <- list()
   
-  quadrado <- obj$quadrado
+  desc <- obj$desc
+  bq1 <- as.numeric(desc[1])
+  bq2 <- as.numeric(desc[2])
+  bq3 <- as.numeric(desc[3])
+  bq4 <- as.numeric(desc[4])
   
-  #pega os 4 quadrados
-  bq1 <- as.numeric(quadrado[1])
-  bq2 <- as.numeric(quadrado[2])
-  bq3 <- as.numeric(quadrado[3])
-  bq4 <- as.numeric(quadrado[4])
-  
-  bAtual <- obj$quad_atual
- 
+  bAtual <- as.numeric(desc[5])
   
   ## gera filhos usando todos os operadores  
   if(bAtual == 1){
     
-    filhosQuadrados<- list(c(c(0 ,bq2,bq3, bq4), bAtual), #limpar
-                       c(c(bq1 ,bq2,bq3, bq4), 3), #direita
-                       c(c(bq1 ,bq2,bq3, bq4), 2), #pra baixo
-                       c(c(bq1 ,bq2,bq3, bq4), bAtual), #pra esquerda
-                       c(c(bq1 ,bq2,bq3, bq4), bAtual)) #pra cima
+    filhosQuadrados<- list(c(0 ,bq2,bq3, bq4, bAtual), #limpar
+                           c(bq1 ,bq2,bq3, bq4, 3), #direita
+                           c(bq1 ,bq2,bq3, bq4, 2), #pra baixo
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra esquerda
+                           c(bq1 ,bq2,bq3, bq4, bAtual)) #pra cima
     
   }
   if(bAtual == 2){
     
-    filhosQuadrados<- list(d(c(bq1 , 0, bq3, bq4), bAtual), #limpar
-                           d(c(bq1 ,bq2,bq3, bq4), 4), #direita
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual), #pra baixo
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual), #pra esquerda
-                           d(c(bq1 ,bq2,bq3, bq4), 1)) #pra cima
+    filhosQuadrados<- list(c(bq1 , 0, bq3, bq4, bAtual), #limpar
+                           c(bq1 ,bq2,bq3, bq4, 4), #direita
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra baixo
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra esquerda
+                           c(bq1 ,bq2,bq3, bq4, 1)) #pra cima
     
   }
   if(bAtual == 3){
     
-    filhosQuadrados<- list(d(c(bq1 ,bq2, 0, bq4), bAtual), #limpar
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual), #direita
-                           d(c(bq1 ,bq2,bq3, bq4), 4), #pra baixo
-                           d(c(bq1 ,bq2,bq3, bq4), 1), #pra esquerda
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual)) #pra cima
+    filhosQuadrados<- list(c(bq1 ,bq2, 0, bq4, bAtual), #limpar
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #direita
+                           c(bq1 ,bq2,bq3, bq4, 4), #pra baixo
+                           c(bq1 ,bq2,bq3, bq4, 1), #pra esquerda
+                           c(bq1 ,bq2,bq3, bq4, bAtual)) #pra cima
     
   }
   if(bAtual == 4){
     
-    filhosQuadrados<- list(d(c(bq1 ,bq2,bq3, 0), bAtual), #limpar
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual), #direita
-                           d(c(bq1 ,bq2,bq3, bq4), bAtual), #pra baixo
-                           d(c(bq1 ,bq2,bq3, bq4), 2), #pra esquerda
-                           d(c(bq1 ,bq2,bq3, bq4), 3)) #pra cima
+    filhosQuadrados<- list(c(bq1 ,bq2,bq3, 0, bAtual), #limpar
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #direita
+                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra baixo
+                           c(bq1 ,bq2,bq3, bq4, 2), #pra esquerda
+                           c(bq1 ,bq2,bq3, bq4, 3)) #pra cima
     
   }
   
-  ## verifica estados filhos incompatíveis com o problema  
-#  incompativeis <- sapply(1:length(filhosQuadrados),
-#                          function(i) {
-#                            fDesc <- filhosQuadrados[[i]]
-#                            if((fDesc['C'] > fDesc['M']) || ## Se #Canibais > #Missionários OU
-#                               (any(fDesc[1:2] > 3)) ||     ##    #Canibais ou #Missionários > 3 OU
-#                               (any(fDesc[1:2] < 0)))       ##    #Canibais ou #Missionarios < 0 então
-#                              i ## é incompatível: retorna índice
-#                            else
-#                              0 ## senão é compatível
-#                          })
-  
-  ## mantém no vetor apenas os que são incompatíveis
-#  incompativeis <- incompativeis[incompativeis != 0]
-  
-  ## remove estados filhos incompatíveis
- # filhosDesc <- filhosDesc[-incompativeis]
   
   ## gera os objetos Canibais para os filhos
-  i <- 0
-  for(filhoDesc in filhosQuadrados){
-    filho <- QuadradosAmbiente(quadrado = filhoDesc, pai = obj)
+  for(filhoDesc in filhosDesc){
+    filho <- QuadradoAmbiente(desc = filhoDesc, pai = obj)
     filho$h <- heuristica(filho)
-    filho$g <- obj$g + as.numeric(custo[i])
+    filho$g <- obj$g + 1
     filhos <- c(filhos, list(filho))
-    i<- i + 1
   }
   
   return(filhos)

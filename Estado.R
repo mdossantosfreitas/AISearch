@@ -1,9 +1,11 @@
-Estado <- function(quadrado=NULL, quad_atual = NULL){
+Estado <- function(desc=NULL){
   
   e <- environment()
   
-  assign("quadrado", quadrado, envir = e)
-  assign("quad_atual", quad_atual, envir = e)
+  #Q1,Q2,Q3,Q4,Aspirador
+  #1 se sujo, e 0 se nao
+  #Aspirador = 1 ou 2 ou 3 ou 4
+  assign("desc", desc, envir = e)
   assign("pai", NULL, envir = e)
   assign("g", 0, envir = e)
   assign("h", Inf, envir = e)
@@ -17,14 +19,13 @@ Estado <- function(quadrado=NULL, quad_atual = NULL){
 ## Sobrecarregando o operador "==" para comparação entre estados
 Ops.Estado = function(obj1,obj2){
   if(.Generic == "=="){
-    return(all(obj1$quadrado == obj2$quadrado, obj1$quad_atual == obj2$quad_atual))
+    return(all(obj1$desc == obj2$desc))
   }
 }
 
 ## Sobrecarga da função genérica print
 print.Estado <- function(obj){
-  cat(obj$quadrado, "\n")
-  cat(obj$quad_atual, "\n")
+  cat(obj$desc, "\n")
   cat(obj$g, "\n")
   cat(obj$h, "\n")
 }
