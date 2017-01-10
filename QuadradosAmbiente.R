@@ -19,6 +19,8 @@ QuadradoAmbiente <- function(desc = NULL, pai = NULL){
 ## Sobrecarregando o operador "==" para comparação entre estados
 Ops.QuadradoAmbiente = function(obj1,obj2){
   if(.Generic == "=="){
+    print(obj1$desc)
+    print(obj2$desc)
     return(all(obj1$desc == obj2$desc))
   }
 }
@@ -97,7 +99,7 @@ geraFilhos.QuadradoAmbiente <- function(obj) {
   for(filhoDesc in filhosDesc){
     filho <- QuadradoAmbiente(desc = filhoDesc, pai = obj)
     filho$h <- heuristica(filho)
-    filho$g <- obj$g + 1
+    filho$g <- obj$g + filhoDesc$g
     filhos <- c(filhos, list(filho))
   }
   

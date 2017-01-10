@@ -2,10 +2,10 @@ debugSource("QuadradosAmbiente.R")
 debugSource("buscaDesinformada.R")
 debugSource("buscaInformada.R")
 
-inicial <- QuadradoAmbiente(desc = c(Q1 = 1, Q2 = 0, Q3 = 0, Q4 = 0, A = 1))
+inicial <- QuadradoAmbiente(desc = c(Q1 = 1, Q2 = 1, Q3 = 0, Q4 = 0, A = 1))
 
 objetivo <- QuadradoAmbiente()
-objetivo$quadrado<- c(Q1 = 0, Q2 = 0, Q3 = 0, Q4 = 0, A = 1)
+objetivo$desc <- c(Q1 = 0, Q2 = 0, Q3 = 0, Q4 = 0, A = 1)
 
 
 cat("====\tBusca em Largura\t====\n")

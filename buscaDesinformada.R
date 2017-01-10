@@ -2,10 +2,12 @@ buscaEmLargura <- function(inicial, objetivo){
   
   abertos <- list(inicial)
   fechados <- list()
-
+  i <- 0 
   while(length(abertos) != 0){
+    i < i + 1
     atual <- abertos[[1]]
     abertos <- abertos[-1]
+    
     if(atual == objetivo){
       return(recuperaCaminho(atual))
     }else {
