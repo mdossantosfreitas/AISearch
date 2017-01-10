@@ -38,8 +38,8 @@ heuristica.QuadradoAmbiente <- function(atual){
   
   if(is.null(atual$desc))
     return(Inf)
-  ## h(obj) = M + C + B
-  return(sum(atual$desc))
+  ## h(obj) = Q1 + Q2 + Q3 + Q4
+  return(sum(atual$desc) - as.numeric(atual$desc[5]))
 }
 
 geraFilhos.QuadradoAmbiente <- function(obj) {
