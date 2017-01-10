@@ -19,8 +19,9 @@ Estado <- function(desc=NULL){
 ## Sobrecarregando o operador "==" para comparação entre estados
 Ops.Estado = function(obj1,obj2){
   if(.Generic == "=="){
-    return(all(obj1$desc$Q1 == obj2$desc$Q1, obj1$desc$Q2 == obj2$desc$Q2, obj1$desc$Q3 == obj2$desc$Q3,
-              obj1$desc$Q4 == obj2$desc$Q4))
+    return(all(obj1$desc == obj2$desc))
+   # return(all(obj1$desc$Q1 == obj2$desc$Q1, obj1$desc$Q2 == obj2$desc$Q2, obj1$desc$Q3 == obj2$desc$Q3,
+    #          obj1$desc$Q4 == obj2$desc$Q4))
   }
 }
 

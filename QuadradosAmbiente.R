@@ -19,9 +19,9 @@ QuadradoAmbiente <- function(desc = NULL, pai = NULL){
 ## Sobrecarregando o operador "==" para comparação entre estados
 Ops.QuadradoAmbiente = function(obj1,obj2){
   if(.Generic == "=="){
-    print(obj1$desc)
-    print(obj2$desc)
     return(all(obj1$desc == obj2$desc))
+  #  return(all(obj1$desc$Q1 == obj2$desc$Q1, obj1$desc$Q2 == obj2$desc$Q2, obj1$desc$Q3 == obj2$desc$Q3,
+   #            obj1$desc$Q4 == obj2$desc$Q4))
   }
 }
 
@@ -59,47 +59,47 @@ geraFilhos.QuadradoAmbiente <- function(obj) {
   ## gera filhos usando todos os operadores  
   if(bAtual == 1){
     
-    filhosQuadrados<- list(c(0 ,bq2,bq3, bq4, bAtual), #limpar
-                           c(bq1 ,bq2,bq3, bq4, 3), #direita
-                           c(bq1 ,bq2,bq3, bq4, 2), #pra baixo
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra esquerda
-                           c(bq1 ,bq2,bq3, bq4, bAtual)) #pra cima
+    filhosQuadrados<- list(c(Q1 = 0 ,Q2 = bq2,Q3 = bq3, Q4 = bq4, A = bAtual), #limpar
+                           c(Q1 = bq1 ,Q2 = bq2,Q3 = bq3, Q4 = bq4, A = 3), #direita
+                           c(Q1 = bq1 ,Q2 = bq2,Q3 = bq3, Q4 = bq4, A = 2), #pra baixo
+                           c(Q1 = bq1 ,Q2 = bq2,Q3 = bq3, Q4 = bq4, A=bAtual), #pra esquerda
+                           c(Q1 = bq1 , Q2 = bq2,Q3 = bq3, Q4 = bq4, A=bAtual)) #pra cima
     
   }
   if(bAtual == 2){
     
-    filhosQuadrados<- list(c(bq1 , 0, bq3, bq4, bAtual), #limpar
-                           c(bq1 ,bq2,bq3, bq4, 4), #direita
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra baixo
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra esquerda
-                           c(bq1 ,bq2,bq3, bq4, 1)) #pra cima
+    filhosQuadrados<- list(c(Q1 = bq1 , Q2 = 0, Q3 = bq3, Q4 =bq4, A =bAtual), #limpar
+                           c(Q1 = bq1 ,Q2 =bq2,Q3 = bq3, Q4 =bq4, A = 4), #direita
+                           c(Q1 = bq1 ,Q2 =bq2,Q3 = bq3, Q4 =bq4, A = bAtual), #pra baixo
+                           c(Q1 = bq1 ,Q2 =bq2,Q3 = bq3, Q4 = bq4, A = bAtual), #pra esquerda
+                           c(Q1 = bq1 ,Q2 =bq2,Q3 = bq3, Q4 =bq4, A = 1)) #pra cima
     
   }
   if(bAtual == 3){
     
-    filhosQuadrados<- list(c(bq1 ,bq2, 0, bq4, bAtual), #limpar
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #direita
-                           c(bq1 ,bq2,bq3, bq4, 4), #pra baixo
-                           c(bq1 ,bq2,bq3, bq4, 1), #pra esquerda
-                           c(bq1 ,bq2,bq3, bq4, bAtual)) #pra cima
+    filhosQuadrados<- list(c(Q1 =bq1 ,Q2 = bq2, Q3 =0, Q4=bq4, A=bAtual), #limpar
+                           c(Q1 =bq1 ,Q2= bq2,Q3 =bq3, Q4=bq4, A=bAtual), #direita
+                           c(Q1 =bq1 ,Q2 =bq2,Q3 =bq3, Q4 =bq4, A=4), #pra baixo
+                           c(Q1 =bq1 ,Q2 =bq2,Q3=bq3, Q4 =bq4, A=1), #pra esquerda
+                           c(Q1 =bq1 ,Q2 =bq2,Q3 =bq3, Q4 =bq4, A=bAtual)) #pra cima
     
   }
   if(bAtual == 4){
     
-    filhosQuadrados<- list(c(bq1 ,bq2,bq3, 0, bAtual), #limpar
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #direita
-                           c(bq1 ,bq2,bq3, bq4, bAtual), #pra baixo
-                           c(bq1 ,bq2,bq3, bq4, 2), #pra esquerda
-                           c(bq1 ,bq2,bq3, bq4, 3)) #pra cima
+    filhosQuadrados<- list(c(Q1=bq1 ,Q2=bq2,Q3=bq3, Q4=0, A=bAtual), #limpar
+                           c(Q1=bq1 ,Q2=bq2,Q3=bq3, Q4=bq4, A=bAtual), #direita
+                           c(Q1=bq1 ,Q2=bq2,Q3=bq3, Q4=bq4, A=bAtual), #pra baixo
+                           c(Q1=bq1 ,Q2=bq2,Q3=bq3, Q4=bq4, A=2), #pra esquerda
+                           c(Q1=bq1 ,Q2=bq2,Q3=bq3, Q4=bq4, A=3)) #pra cima
     
   }
   
-  
+  filhosDesc <- filhosQuadrados
   ## gera os objetos Canibais para os filhos
   for(filhoDesc in filhosDesc){
     filho <- QuadradoAmbiente(desc = filhoDesc, pai = obj)
     filho$h <- heuristica(filho)
-    filho$g <- obj$g + filhoDesc$g
+    filho$g <- obj$g + 1
     filhos <- c(filhos, list(filho))
   }
   
