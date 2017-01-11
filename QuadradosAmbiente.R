@@ -43,7 +43,7 @@ heuristica.QuadradoAmbiente <- function(atual){
 }
 
 geraFilhos.QuadradoAmbiente <- function(obj) {
-  custo <- c(2,1,1,3,3)
+  
   filhos <- list()
   
   filhosDesc <- list()
@@ -94,13 +94,16 @@ geraFilhos.QuadradoAmbiente <- function(obj) {
     
   }
   
+  custo <- c(2, 1, 3, 1, 3)
+  i<-1
   filhosDesc <- filhosQuadrados
   ## gera os objetos Canibais para os filhos
   for(filhoDesc in filhosDesc){
     filho <- QuadradoAmbiente(desc = filhoDesc, pai = obj)
     filho$h <- heuristica(filho)
-    filho$g <- obj$g + 1
+    filho$g <- obj$g + custo[i]
     filhos <- c(filhos, list(filho))
+    i<-i+1
   }
   
   return(filhos)
